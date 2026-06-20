@@ -222,6 +222,66 @@
 
   .reveal{opacity:0;transform:translateY(22px);transition:opacity .7s,transform .7s}
   .reveal.in{opacity:1;transform:none}
+
+  /* ============ МОБИЛЬНАЯ АДАПТАЦИЯ ============ */
+  /* защита от горизонтального переполнения (grid/flex blowout) */
+  *{min-width:0}
+  html,body{max-width:100%;overflow-x:hidden}
+  img,svg,table{max-width:100%}
+  footer .logo{justify-content:center}
+
+  @media(max-width:860px){
+    .wrap{padding:0 18px}
+    section{padding:56px 0}
+    .hero-inner{padding:62px 0 52px}
+    .sec-title{font-size:30px}
+    .sec-sub{margin-bottom:26px}
+
+    /* выпадающее меню */
+    .nav .wrap{position:relative}
+    .nav-links{position:absolute;top:64px;left:0;right:0;flex-direction:column;gap:0;
+      background:var(--black);border-bottom:1px solid var(--line)}
+    .nav-links a{padding:15px 18px;border-top:1px solid var(--line);font-size:15px}
+
+    /* hero — симметричная сетка 2×2 и кнопки на всю ширину */
+    .hero h1{font-size:38px}
+    .hero-stats{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+    .stat{min-width:0;text-align:center;padding:15px 10px}
+    .cta-row{display:grid;grid-template-columns:1fr;gap:12px;margin-top:28px}
+    .btn{width:100%;justify-content:center}
+
+    /* карточка прогресса */
+    .overall{padding:20px}
+    .overall .big{font-size:42px}
+    .overall-top{align-items:flex-start}
+
+    /* этапы */
+    .step{grid-template-columns:42px 1fr;gap:13px;padding:16px}
+    .marker{width:42px;height:42px;font-size:17px}
+    .step-head h3{font-size:16px}
+    .step-head{gap:8px}
+    .mini-bar{max-width:none}
+    .step-money{gap:10px}
+    .mtag{font-size:12px}
+    .toggle{margin-left:0;width:100%;text-align:center}
+
+    /* финансы */
+    .planfact{padding:18px}
+    .pf-head{margin-bottom:14px}
+    .pf-v{font-size:22px}
+    table{font-size:13px}
+    th,td{padding:10px 11px}
+    th{font-size:12px}
+
+    /* карточки/галерея на всю ширину */
+    .card{padding:18px}
+  }
+
+  @media(max-width:380px){
+    .hero h1{font-size:33px}
+    .nav-links{font-size:14px}
+    .overall .big{font-size:36px}
+  }
 </style>
 </head>
 <body>
