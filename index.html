@@ -1,0 +1,562 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SMARTWASH — Мойка самообслуживания 24/7 · Прогресс реализации</title>
+<meta name="description" content="SMARTWASH — мойка самообслуживания 24/7, 8 постов, г. Актобе. Трекер хода реализации проекта.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --graphite:#23232A;
+    --black:#16181C;
+    --yellow:#FFC400;
+    --white:#FFFFFF;
+    --asphalt:#6E6B72;
+    --card:#2B2B33;
+    --line:#3A3A44;
+    --green:#34C759;
+    --shadow:0 10px 40px rgba(0,0,0,.35);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{
+    background:var(--graphite);
+    color:var(--white);
+    font-family:'Inter',system-ui,-apple-system,sans-serif;
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+  }
+  h1,h2,h3,.h{font-family:'Oswald',sans-serif;text-transform:uppercase;letter-spacing:.02em;font-weight:700;line-height:1.05}
+  a{color:inherit;text-decoration:none}
+  .wrap{max-width:1180px;margin:0 auto;padding:0 22px}
+  .accent{color:var(--yellow)}
+
+  /* ---------- NAV ---------- */
+  header.nav{
+    position:sticky;top:0;z-index:50;
+    background:rgba(22,24,28,.85);backdrop-filter:blur(10px);
+    border-bottom:1px solid var(--line);
+  }
+  .nav .wrap{display:flex;align-items:center;justify-content:space-between;height:64px}
+  .logo{font-family:'Oswald';font-weight:700;font-size:22px;letter-spacing:.06em}
+  .logo b{color:var(--yellow)}
+  .nav-links{display:flex;gap:26px;font-size:14px;font-weight:500}
+  .nav-links a{color:#cfcfd6;transition:color .2s}
+  .nav-links a:hover{color:var(--yellow)}
+  .burger{display:none;background:none;border:0;color:#fff;font-size:26px;cursor:pointer}
+  @media(max-width:860px){.nav-links{display:none}.burger{display:block}}
+
+  /* ---------- HERO ---------- */
+  .hero{position:relative;overflow:hidden;border-bottom:1px solid var(--line)}
+  .hero-bg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:.28}
+  .hero-grad{position:absolute;inset:0;background:linear-gradient(180deg,rgba(22,24,28,.55),rgba(35,35,42,.92))}
+  .hero-inner{position:relative;padding:84px 0 70px}
+  .badge{display:inline-flex;align-items:center;gap:8px;background:var(--yellow);color:var(--black);
+    font-weight:700;font-size:13px;padding:7px 14px;border-radius:30px;letter-spacing:.04em}
+  .badge .dot{width:8px;height:8px;border-radius:50%;background:var(--black);animation:pulse 1.6s infinite}
+  @keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
+  .hero h1{font-size:clamp(38px,6vw,72px);margin:22px 0 14px}
+  .hero p.lead{font-size:clamp(16px,2vw,20px);color:#d7d7de;max-width:640px}
+  .hero-stats{display:flex;flex-wrap:wrap;gap:14px;margin-top:34px}
+  .stat{background:rgba(43,43,51,.7);border:1px solid var(--line);border-radius:14px;padding:16px 22px;min-width:150px}
+  .stat .v{font-family:'Oswald';font-size:30px;color:var(--yellow);font-weight:700}
+  .stat .l{font-size:13px;color:var(--asphalt);text-transform:uppercase;letter-spacing:.05em}
+  .cta-row{display:flex;gap:14px;margin-top:34px;flex-wrap:wrap}
+  .btn{display:inline-flex;align-items:center;gap:8px;padding:14px 26px;border-radius:12px;font-weight:700;
+    font-size:15px;cursor:pointer;border:2px solid var(--yellow);transition:transform .15s,background .2s}
+  .btn-primary{background:var(--yellow);color:var(--black)}
+  .btn-ghost{background:transparent;color:var(--yellow)}
+  .btn:hover{transform:translateY(-2px)}
+
+  /* ---------- SECTIONS ---------- */
+  section{padding:74px 0;border-bottom:1px solid var(--line)}
+  .sec-tag{color:var(--yellow);font-family:'Oswald';font-weight:600;font-size:14px;letter-spacing:.18em;text-transform:uppercase}
+  .sec-title{font-size:clamp(28px,4vw,44px);margin:8px 0 10px}
+  .sec-sub{color:#bcbcc6;max-width:680px;margin-bottom:36px}
+
+  /* ---------- PROGRESS TRACKER ---------- */
+  .overall{background:linear-gradient(135deg,var(--card),#22222a);border:1px solid var(--line);
+    border-radius:18px;padding:28px;margin-bottom:40px;box-shadow:var(--shadow)}
+  .overall-top{display:flex;justify-content:space-between;align-items:flex-end;flex-wrap:wrap;gap:12px}
+  .overall .big{font-family:'Oswald';font-size:54px;color:var(--yellow);font-weight:700;line-height:1}
+  .overall .cur{font-size:14px;color:#cfcfd6}
+  .overall .cur b{color:#fff}
+  .pbar{height:14px;background:#1c1c22;border-radius:10px;overflow:hidden;margin-top:18px;border:1px solid var(--line)}
+  .pbar>span{display:block;height:100%;background:linear-gradient(90deg,var(--yellow),#ffd84d);
+    border-radius:10px;width:0;transition:width 1.2s cubic-bezier(.22,1,.36,1)}
+
+  .timeline{position:relative;display:grid;gap:14px}
+  .step{display:grid;grid-template-columns:54px 1fr;gap:18px;align-items:start;
+    background:var(--card);border:1px solid var(--line);border-radius:16px;padding:18px 20px;
+    transition:border-color .2s,transform .2s}
+  .step:hover{border-color:var(--asphalt);transform:translateX(3px)}
+  .step.in_progress{border-color:var(--yellow);box-shadow:0 0 0 1px var(--yellow) inset}
+  .step.done{opacity:.95}
+  .marker{width:54px;height:54px;border-radius:50%;display:grid;place-items:center;
+    font-family:'Oswald';font-size:20px;font-weight:700;border:2px solid var(--line);background:#1c1c22}
+  .step.done .marker{background:var(--green);border-color:var(--green);color:#fff}
+  .step.in_progress .marker{background:var(--yellow);border-color:var(--yellow);color:var(--black)}
+  .step-head{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
+  .step-head h3{font-size:19px}
+  .chip{font-size:11px;font-weight:700;padding:4px 11px;border-radius:20px;text-transform:uppercase;letter-spacing:.04em;white-space:nowrap}
+  .chip.done{background:rgba(52,199,89,.18);color:var(--green)}
+  .chip.in_progress{background:rgba(255,196,0,.18);color:var(--yellow)}
+  .chip.planned{background:rgba(110,107,114,.22);color:#b7b7c0}
+  .step p{font-size:14px;color:#b9b9c2;margin-top:6px}
+  .mini-bar{height:7px;background:#1c1c22;border-radius:6px;overflow:hidden;margin-top:12px;max-width:340px}
+  .mini-bar>span{display:block;height:100%;background:var(--yellow);width:0;transition:width 1s ease}
+  .pct{font-family:'Oswald';font-weight:600;color:var(--yellow);font-size:14px}
+
+  /* money strip in overall card */
+  .money-strip{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:20px}
+  @media(max-width:680px){.money-strip{grid-template-columns:1fr}}
+  .ms{background:#1c1c22;border:1px solid var(--line);border-radius:12px;padding:13px 16px}
+  .ms-l{font-size:12px;color:var(--asphalt);text-transform:uppercase;letter-spacing:.04em}
+  .ms-v{font-family:'Oswald';font-size:22px;font-weight:700;margin-top:3px}
+  .ms-v.fact{color:var(--yellow)}
+
+  /* per-step money + expandable details */
+  .step-money{display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin-top:14px}
+  .mtag{font-size:13px;color:#b0b0ba}
+  .mtag b{font-family:'Oswald';font-weight:600;color:#fff}
+  .mtag b.fact{color:var(--yellow)}
+  .mtag b.over{color:#FF6B6B}
+  .toggle{margin-left:auto;background:rgba(255,196,0,.12);border:1px solid var(--line);color:var(--yellow);
+    font-weight:600;font-size:13px;padding:7px 14px;border-radius:9px;cursor:pointer;transition:background .2s}
+  .toggle:hover{background:rgba(255,196,0,.22)}
+  .details{max-height:0;overflow:hidden;transition:max-height .45s ease;}
+  .details.open{max-height:600px;margin-top:14px}
+  .budget-bar{height:9px;background:#1c1c22;border:1px solid var(--line);border-radius:6px;overflow:hidden}
+  .budget-bar>span{display:block;height:100%;width:0;background:var(--yellow);transition:width .9s ease}
+  .budget-bar>span.over{background:#FF6B6B}
+  .budget-cap{font-size:12px;color:var(--asphalt);margin:7px 0 12px}
+  .spend-tbl{font-size:13px}
+  .spend-tbl th{font-size:12px;padding:9px 12px}
+  .spend-tbl td{padding:9px 12px}
+  .spend-tbl td.empty{color:var(--asphalt);text-align:center;font-style:italic}
+
+  /* plan vs fact card in finance */
+  .planfact{background:linear-gradient(135deg,var(--card),#22222a);border:1px solid var(--line);
+    border-radius:18px;padding:24px;margin-bottom:34px;box-shadow:var(--shadow)}
+  .pf-head{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;margin-bottom:18px}
+  .pf-pct{font-size:14px;color:#c7c7d0}.pf-pct b{font-family:'Oswald';color:var(--yellow);font-size:18px}
+  .pf-cells{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+  @media(max-width:680px){.pf-cells{grid-template-columns:1fr}}
+  .pf-cell{background:#1c1c22;border:1px solid var(--line);border-radius:12px;padding:16px}
+  .pf-l{font-size:12px;color:var(--asphalt);text-transform:uppercase;letter-spacing:.04em}
+  .pf-v{font-family:'Oswald';font-size:26px;font-weight:700;margin-top:5px}
+  .pf-v.fact{color:var(--yellow)}
+  .pf-note{font-size:13px;color:var(--asphalt);margin-top:14px}
+
+  /* ---------- GRID CARDS ---------- */
+  .grid{display:grid;gap:18px}
+  .g2{grid-template-columns:repeat(2,1fr)}
+  .g3{grid-template-columns:repeat(3,1fr)}
+  .g4{grid-template-columns:repeat(4,1fr)}
+  @media(max-width:860px){.g2,.g3,.g4{grid-template-columns:1fr}}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:22px}
+  .card h3{font-size:18px;margin-bottom:8px;color:var(--yellow)}
+  .card p{font-size:14px;color:#bcbcc6}
+
+  table{width:100%;border-collapse:collapse;font-size:14px;background:var(--card);
+    border-radius:14px;overflow:hidden;border:1px solid var(--line)}
+  th,td{padding:13px 16px;text-align:left;border-bottom:1px solid var(--line)}
+  th{background:#1f1f26;font-family:'Oswald';font-weight:600;text-transform:uppercase;font-size:13px;letter-spacing:.04em;color:#d7d7de}
+  td.num,th.num{text-align:right;font-variant-numeric:tabular-nums}
+  tr:last-child td{border-bottom:0}
+  tr.total td{background:rgba(255,196,0,.08);font-weight:700;color:#fff}
+
+  /* ---------- GALLERY / IMAGES ---------- */
+  .ph{position:relative;border-radius:14px;overflow:hidden;background:#1c1c22;border:1px solid var(--line);
+    aspect-ratio:16/10;display:block}
+  .ph img{width:100%;height:100%;object-fit:cover;display:block}
+  .ph .fallback{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;
+    gap:10px;text-align:center;padding:18px;color:var(--asphalt)}
+  .ph .fallback svg{width:42px;height:42px;opacity:.5}
+  .ph .fallback span{font-size:13px;font-weight:500}
+  .ph .cap{position:absolute;left:0;right:0;bottom:0;padding:12px 14px;font-size:13px;font-weight:600;
+    background:linear-gradient(0deg,rgba(0,0,0,.8),transparent)}
+  .gallery{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+  @media(max-width:860px){.gallery{grid-template-columns:1fr}}
+  .ph-tall{aspect-ratio:16/9}
+
+  .loc-grid{display:grid;grid-template-columns:1.6fr 1fr;gap:22px;align-items:start}
+  @media(max-width:860px){.loc-grid{grid-template-columns:1fr}}
+  .loc-map .note{display:flex;align-items:flex-start;gap:12px;margin-top:14px;background:var(--card);
+    border:1px solid var(--line);border-left:3px solid var(--yellow);border-radius:10px;padding:14px 16px}
+  .loc-map .note p{font-size:14px;color:#c7c7d0}
+  .loc-map .note b{color:#fff}
+  .note-line{flex:none;width:26px;height:3px;background:#fff;border-radius:2px;margin-top:9px;
+    box-shadow:0 0 0 1px rgba(0,0,0,.4)}
+
+  .specs{list-style:none;display:grid;gap:10px}
+  .specs li{display:flex;justify-content:space-between;gap:14px;padding:12px 16px;background:var(--card);
+    border:1px solid var(--line);border-radius:10px;font-size:14px}
+  .specs li b{color:var(--yellow);font-family:'Oswald';font-weight:600}
+
+  footer{padding:50px 0;text-align:center;color:var(--asphalt);font-size:14px}
+  footer .logo{font-size:26px;margin-bottom:10px;color:#fff}
+  .updated{color:var(--asphalt);font-size:13px;margin-top:6px}
+
+  .reveal{opacity:0;transform:translateY(22px);transition:opacity .7s,transform .7s}
+  .reveal.in{opacity:1;transform:none}
+</style>
+</head>
+<body>
+
+<header class="nav">
+  <div class="wrap">
+    <div class="logo">SMART<b>WASH</b></div>
+    <nav class="nav-links">
+      <a href="#progress">Прогресс</a>
+      <a href="#about">О проекте</a>
+      <a href="#location">Локация</a>
+      <a href="#build">Конструкция</a>
+      <a href="#finance">Финансы</a>
+      <a href="#gallery">Галерея</a>
+    </nav>
+    <button class="burger" onclick="document.querySelector('.nav-links').style.display=(getComputedStyle(this.previousElementSibling).display==='none'?'flex':'none')">☰</button>
+  </div>
+</header>
+
+<!-- HERO -->
+<section class="hero" style="border-bottom:none;padding:0">
+  <img class="hero-bg" data-src="images/render-3d.png" alt="">
+  <div class="hero-grad"></div>
+  <div class="wrap hero-inner">
+    <span class="badge"><span class="dot"></span>СТАТУС: В РЕАЛИЗАЦИИ · 24/7</span>
+    <h1>SMART<span class="accent">WASH</span><br>Мойка самообслуживания</h1>
+    <p class="lead">Автоматизированная мойка на <b>8 постов</b>, режим <b>24/7</b>. г. Актобе, ул. Макаренко 5А. Следите за ходом реализации проекта в реальном времени.</p>
+    <div class="hero-stats">
+      <div class="stat"><div class="v">8</div><div class="l">постов</div></div>
+      <div class="stat"><div class="v">24/7</div><div class="l">режим</div></div>
+      <div class="stat"><div class="v">≈19</div><div class="l">мес окупаемость</div></div>
+      <div class="stat"><div class="v">87,9</div><div class="l">млн ₸ инвестиций</div></div>
+    </div>
+    <div class="cta-row">
+      <a href="#progress" class="btn btn-primary">→ Прогресс реализации</a>
+      <a href="#about" class="btn btn-ghost">О проекте</a>
+    </div>
+  </div>
+</section>
+
+<!-- PROGRESS -->
+<section id="progress">
+  <div class="wrap">
+    <div class="sec-tag">Трекер</div>
+    <h2 class="sec-title">Прогресс реализации</h2>
+    <p class="sec-sub">Что уже сделано и что впереди. Текущий этап — бурение скважины. Данные обновляются по мере хода работ.</p>
+
+    <div class="overall reveal">
+      <div class="overall-top">
+        <div>
+          <div class="big" id="overallPct">0%</div>
+          <div class="cur">Текущий этап: <b id="curStage">—</b></div>
+        </div>
+        <div class="cur"><span id="doneCount">0</span> из <span id="totalCount">10</span> этапов завершено</div>
+      </div>
+      <div class="pbar"><span id="overallBar"></span></div>
+      <div class="money-strip">
+        <div class="ms"><div class="ms-l">Потрачено (факт)</div><div class="ms-v fact" id="spentTotal">—</div></div>
+        <div class="ms"><div class="ms-l">Плановый бюджет</div><div class="ms-v" id="plannedTotal">—</div></div>
+        <div class="ms"><div class="ms-l">Остаток бюджета</div><div class="ms-v" id="remainTotal">—</div></div>
+      </div>
+    </div>
+
+    <p class="sec-sub" style="margin:-18px 0 22px">Нажмите <b>«Детализация расходов»</b> у любого этапа, чтобы раскрыть, на что и сколько потрачено.</p>
+    <div class="timeline" id="timeline"></div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="wrap">
+    <div class="sec-tag">О проекте</div>
+    <h2 class="sec-title">Современная мойка формата 24/7</h2>
+    <p class="sec-sub">Клиент сам моет авто на оборудованном посту (АВД, пена, воск, ополаскивание, пылесос), оплачивая время через терминал. Минимум персонала, круглосуточный режим, высокая маржинальность.</p>
+    <div class="grid g3">
+      <div class="card reveal"><h3>8 постов · легковые</h3><p>Все боксы рассчитаны на легковые авто. Насосная по центру здания — короткие трассы и удобное обслуживание.</p></div>
+      <div class="card reveal"><h3>Тёплый контур</h3><p>Ролл-шторы (рольставни) на боксах и утепление — стабильная работа зимой. LED-освещение постов и фасада.</p></div>
+      <div class="card reveal"><h3>Своя скважина</h3><p>Собственный источник воды — независимость от водоснабжения и низкая себестоимость. Терминалы: нал/безнал/QR/Kaspi.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- LOCATION -->
+<section id="location">
+  <div class="wrap">
+    <div class="sec-tag">Локация</div>
+    <h2 class="sec-title">г. Актобе, ул. Макаренко 5А</h2>
+    <p class="sec-sub">Угловой участок на перекрёстке Макаренко × Рыскулова, 1-я линия по оживлённой улице. Рядом — жилмассив, общежитие мед-университета, мед-центр, почта, АЗС.</p>
+    <div class="loc-grid">
+      <div class="loc-map reveal">
+        <div class="ph ph-tall" data-img="images/location-satellite.png" data-cap="Спутник: угол Макаренко × Рыскулова"></div>
+        <div class="note">
+          <span class="note-line"></span>
+          <p><b>Белыми линиями</b> отмечена площадь застройки (примерная). По факту здание — <b>40 × 6 м</b>, высота <b>5 м</b>.</p>
+        </div>
+      </div>
+      <ul class="specs reveal">
+        <li><span>Адрес</span><b>Макаренко, 5А</b></li>
+        <li><span>Расположение</span><b>Макаренко × Рыскулова</b></li>
+        <li><span>Кадастровый №</span><b>02-036-146-7483</b></li>
+        <li><span>Габариты здания</span><b>40 × 6 м</b></li>
+        <li><span>Высота</span><b>5 м</b></li>
+        <li><span>Линия</span><b>1-я, оживлённый трафик</b></li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- BUILD -->
+<section id="build">
+  <div class="wrap">
+    <div class="sec-tag">Конструкция</div>
+    <h2 class="sec-title">Габариты и каркас</h2>
+    <p class="sec-sub">Здание из металлокаркаса на фундаменте, 40 × 6 м, высота 5 м. Насосная по центру, асфальт перед зданием 8–9 м.</p>
+    <div class="grid g4" style="margin-bottom:26px">
+      <div class="card reveal"><h3>40 × 6 м</h3><p>Габариты здания, ≈240 м² застройки</p></div>
+      <div class="card reveal"><h3>5 м</h3><p>Высота, металлокаркас на фундаменте</p></div>
+      <div class="card reveal"><h3>Профтруба</h3><p>100×100, 80×80, 60×60, 40×40 мм</p></div>
+      <div class="card reveal"><h3>≈493 м²</h3><p>Площадь фасада · сэндвич-панели</p></div>
+    </div>
+    <div class="gallery reveal">
+      <div class="ph" data-img="images/facade-elevation.jpg" data-cap="Развёртка фасада — 8 постов"></div>
+      <div class="ph" data-img="images/structure-sketch-1.jpg" data-cap="Эскиз каркаса — узлы"></div>
+      <div class="ph" data-img="images/plan-layout.png" data-cap="Схема компоновки"></div>
+    </div>
+  </div>
+</section>
+
+<!-- FINANCE -->
+<section id="finance">
+  <div class="wrap">
+    <div class="sec-tag">Финансы</div>
+    <h2 class="sec-title">Финансовая модель</h2>
+    <p class="sec-sub">Базовый (реалистичный) сценарий из инвестиционного меморандума проекта.</p>
+
+    <div class="planfact reveal">
+      <div class="pf-head">
+        <h3 class="h" style="font-size:18px;color:var(--yellow)">Освоение бюджета · План / Факт</h3>
+        <span class="pf-pct"><b id="finPct">0%</b> бюджета освоено</span>
+      </div>
+      <div class="pf-cells">
+        <div class="pf-cell"><div class="pf-l">Плановый бюджет</div><div class="pf-v" id="finPlan">—</div></div>
+        <div class="pf-cell"><div class="pf-l">Потрачено по факту</div><div class="pf-v fact" id="finFact">—</div></div>
+        <div class="pf-cell"><div class="pf-l">Остаток</div><div class="pf-v" id="finRemain">—</div></div>
+      </div>
+      <div class="pf-note">Факт считается из расходов по этапам (раздел «Прогресс»). Раскройте этап, чтобы увидеть детализацию.</div>
+    </div>
+
+    <div class="grid g2" style="align-items:start">
+      <div class="reveal">
+        <h3 class="h" style="font-size:18px;margin-bottom:14px;color:var(--yellow)">Инвестиции (CAPEX) — 87,9 млн ₸</h3>
+        <table>
+          <thead><tr><th>Статья</th><th class="num">Сумма, ₸</th><th class="num">Доля</th></tr></thead>
+          <tbody>
+            <tr><td>Строение</td><td class="num">30 182 000</td><td class="num">34%</td></tr>
+            <tr><td>Оборудование</td><td class="num">26 905 000</td><td class="num">31%</td></tr>
+            <tr><td>Инфраструктура</td><td class="num">23 774 000</td><td class="num">27%</td></tr>
+            <tr><td>Маркетинг и резерв</td><td class="num">7 000 000</td><td class="num">8%</td></tr>
+            <tr class="total"><td>ИТОГО</td><td class="num">87 861 000</td><td class="num">100%</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="reveal">
+        <h3 class="h" style="font-size:18px;margin-bottom:14px;color:var(--yellow)">Операционная модель (в месяц)</h3>
+        <table>
+          <thead><tr><th>Показатель</th><th class="num">Реалист.</th><th class="num">Пессим.</th></tr></thead>
+          <tbody>
+            <tr><td>Выручка</td><td class="num">7 560 000</td><td class="num">3 840 000</td></tr>
+            <tr><td>OPEX (≈38%)</td><td class="num">2 910 800</td><td class="num">—</td></tr>
+            <tr class="total"><td>EBITDA</td><td class="num">4 649 200</td><td class="num">1 840 000</td></tr>
+            <tr><td>Средний чек</td><td class="num">900</td><td class="num">900</td></tr>
+            <tr><td>Окупаемость</td><td class="num">≈19 мес</td><td class="num">≈47 мес</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- GALLERY -->
+<section id="gallery">
+  <div class="wrap">
+    <div class="sec-tag">Галерея</div>
+    <h2 class="sec-title">Визуализации и референсы</h2>
+    <p class="sec-sub">3D-рендеры, фотомонтажи и реальные фото мойки этого формата.</p>
+    <div class="gallery reveal">
+      <div class="ph" data-img="images/render-3d.png" data-cap="3D-рендер фасада"></div>
+      <div class="ph" data-img="images/photo-facade-1.jpg" data-cap="Фасад — вывеска, посты"></div>
+      <div class="ph" data-img="images/photo-facade-2.jpg" data-cap="Посты 5–8"></div>
+      <div class="ph" data-img="images/photo-post-closeup.jpg" data-cap="Пост крупным планом"></div>
+      <div class="ph" data-img="images/viz-parking.png" data-cap="Асфальт + парковка"></div>
+      <div class="ph" data-img="images/photo-logo-entrance.jpg" data-cap="Логотип и вход"></div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="logo">SMART<b style="color:var(--yellow)">WASH</b></div>
+    <div>Мойка самообслуживания 24/7 · г. Актобе, ул. Макаренко 5А</div>
+    <div class="updated">Обновлено: <span id="updated"></span></div>
+  </div>
+</footer>
+
+<script>
+/* ----- Данные трекера (из CLAUDE.md, раздел 9) ----- */
+const STATUS = {done:"Готово", in_progress:"В работе", planned:"Запланировано"};
+
+/* planned_tg — плановый бюджет этапа (сумма = 87 861 000 ₸ CAPEX).
+   spends — фактические расходы; вписывайте реальные траты сюда: {date, item, amount_tg}.
+   Факт по этапу считается автоматически как сумма spends. */
+const PROGRESS = [
+  {id:1, stage:"Бурение скважины", status:"in_progress", percent:10, planned_tg:4000000,
+    desc:"Источник воды для мойки — независимость от центрального водоснабжения и низкая себестоимость. Бурение, обсадка, насос, обвязка, подвод к насосной.",
+    spends:[
+      {date:"2026-06", item:"Аванс за бурение скважины (пример — замените на факт)", amount_tg:400000}
+    ]},
+  {id:2, stage:"Земляные работы и фундамент", status:"planned", percent:0, planned_tg:9000000,
+    desc:"Подготовка площадки, разметка, рытьё, ленточно-плитный фундамент под металлокаркас.", spends:[]},
+  {id:3, stage:"Монтаж металлокаркаса (40×6×5)", status:"planned", percent:0, planned_tg:14000000,
+    desc:"Сборка несущего каркаса из профтрубы 100×100…40×40, габариты 40×6 м, высота 5 м.", spends:[]},
+  {id:4, stage:"Обшивка, утепление, кровля", status:"planned", percent:0, planned_tg:7182000,
+    desc:"Сэндвич-панели/профлист, утепление, кровля — тёплый контур здания.", spends:[]},
+  {id:5, stage:"Инженерные сети, водоподготовка, насосная", status:"planned", percent:0, planned_tg:13774000,
+    desc:"Электрика, отопление, канализация, водоподготовка и очистка, монтаж насосной по центру.", spends:[]},
+  {id:6, stage:"Оборудование 8 постов", status:"planned", percent:0, planned_tg:26905000,
+    desc:"АВД, пеногенераторы, пылесосы, платёжные терминалы на каждом посту.", spends:[]},
+  {id:7, stage:"Ролл-шторы, ворота, LED, вывеска", status:"planned", percent:0, planned_tg:5000000,
+    desc:"Рольставни на боксах, LED-освещение, монтаж вывески SMARTWASH и фасадного брендинга.", spends:[]},
+  {id:8, stage:"Асфальт, благоустройство, парковка", status:"planned", percent:0, planned_tg:6000000,
+    desc:"Асфальтирование (≈1000 м²), въездная зона 8–9 м, парковка, разметка, освещение территории.", spends:[]},
+  {id:9, stage:"Пусконаладка и тесты", status:"planned", percent:0, planned_tg:1000000,
+    desc:"Запуск оборудования и водоподготовки, тестовые мойки, отладка терминалов.", spends:[]},
+  {id:10, stage:"Открытие 24/7", status:"planned", percent:0, planned_tg:1000000,
+    desc:"Запуск мойки в режиме 24/7, маркетинг открытия.", spends:[]}
+];
+
+const fmt = n => (n||0).toLocaleString('ru-RU') + ' ₸';
+const spentOf = p => (p.spends||[]).reduce((s,x)=>s+(x.amount_tg||0),0);
+
+/* ----- Рендер трекера ----- */
+const tl = document.getElementById('timeline');
+PROGRESS.forEach(p=>{
+  const el = document.createElement('div');
+  el.className = 'step ' + p.status;
+  const mark = p.status==='done' ? '✓' : p.id;
+  const spent = spentOf(p);
+  const planned = p.planned_tg||0;
+  const ratio = planned ? Math.min(100, Math.round(spent/planned*100)) : 0;
+  const over = spent > planned;
+  const rows = (p.spends||[]).length
+    ? p.spends.map(s=>`<tr><td>${s.date||''}</td><td>${s.item||''}</td><td class="num">${fmt(s.amount_tg)}</td></tr>`).join('')
+    : `<tr><td colspan="3" class="empty">Расходов пока нет — добавятся по мере работ.</td></tr>`;
+  el.innerHTML = `
+    <div class="marker">${mark}</div>
+    <div>
+      <div class="step-head">
+        <h3>${p.id}. ${p.stage}</h3>
+        <div style="display:flex;align-items:center;gap:10px">
+          <span class="pct">${p.percent}%</span>
+          <span class="chip ${p.status}">${STATUS[p.status]}</span>
+        </div>
+      </div>
+      <p>${p.desc}</p>
+      <div class="mini-bar"><span data-w="${p.percent}"></span></div>
+      <div class="step-money">
+        <span class="mtag">План: <b>${fmt(planned)}</b></span>
+        <span class="mtag">Факт: <b class="${over?'over':'fact'}">${fmt(spent)}</b></span>
+        <button class="toggle" aria-expanded="false">Детализация расходов ▾</button>
+      </div>
+      <div class="details">
+        <div class="budget-bar"><span class="${over?'over':''}" data-w="${ratio}"></span></div>
+        <div class="budget-cap">Освоено ${ratio}% бюджета этапа${over?' · перерасход':''}</div>
+        <table class="spend-tbl">
+          <thead><tr><th>Период</th><th>Статья</th><th class="num">Сумма</th></tr></thead>
+          <tbody>${rows}</tbody>
+        </table>
+      </div>
+    </div>`;
+  tl.appendChild(el);
+});
+
+/* раскрытие/сворачивание этапа */
+tl.addEventListener('click', e=>{
+  const btn = e.target.closest('.toggle');
+  if(!btn) return;
+  const det = btn.closest('.step').querySelector('.details');
+  const open = det.classList.toggle('open');
+  btn.setAttribute('aria-expanded', open);
+  btn.textContent = open ? 'Свернуть ▴' : 'Детализация расходов ▾';
+  if(open){ const b=det.querySelector('.budget-bar>span'); b.style.width=b.dataset.w+'%'; }
+});
+
+/* ----- Сводка ----- */
+const total = PROGRESS.length;
+const doneCount = PROGRESS.filter(p=>p.status==='done').length;
+const overall = Math.round(PROGRESS.reduce((s,p)=>s+p.percent,0)/total);
+const current = PROGRESS.find(p=>p.status==='in_progress') || PROGRESS.find(p=>p.status==='planned');
+document.getElementById('totalCount').textContent = total;
+document.getElementById('doneCount').textContent = doneCount;
+document.getElementById('curStage').textContent = current ? current.stage : 'Завершено';
+document.getElementById('overallPct').textContent = overall + '%';
+
+/* ----- Деньги: план / факт / остаток ----- */
+const plannedTotal = PROGRESS.reduce((s,p)=>s+(p.planned_tg||0),0);
+const spentTotal = PROGRESS.reduce((s,p)=>s+spentOf(p),0);
+const remainTotal = plannedTotal - spentTotal;
+document.getElementById('plannedTotal').textContent = fmt(plannedTotal);
+document.getElementById('spentTotal').textContent = fmt(spentTotal);
+document.getElementById('remainTotal').textContent = fmt(remainTotal);
+const moneyDone = plannedTotal ? Math.round(spentTotal/plannedTotal*100) : 0;
+const fPlan=document.getElementById('finPlan'), fFact=document.getElementById('finFact'),
+      fRemain=document.getElementById('finRemain'), fPct=document.getElementById('finPct');
+if(fPlan){ fPlan.textContent=fmt(plannedTotal); fFact.textContent=fmt(spentTotal);
+  fRemain.textContent=fmt(remainTotal); fPct.textContent=moneyDone+'%'; }
+
+/* ----- Изображения с graceful fallback ----- */
+const ICON = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="4" width="18" height="16" rx="2"/><circle cx="8.5" cy="9.5" r="1.5"/><path d="M21 16l-5-5L5 21"/></svg>`;
+function mountImg(box, src, cap){
+  const img = new Image();
+  img.alt = cap||'';
+  img.onload = ()=>{ box.innerHTML=''; box.appendChild(img); if(cap){const c=document.createElement('div');c.className='cap';c.textContent=cap;box.appendChild(c);} };
+  img.onerror = ()=>{ box.innerHTML = `<div class="fallback">${ICON}<span>${cap||'Фото будет добавлено'}</span></div>`; };
+  img.src = src;
+}
+document.querySelectorAll('.ph').forEach(b=> mountImg(b, b.dataset.img, b.dataset.cap));
+
+/* hero bg */
+(function(){
+  const bg = document.querySelector('.hero-bg');
+  const probe = new Image();
+  probe.onload = ()=> bg.src = bg.dataset.src;
+  probe.onerror = ()=> bg.remove();
+  probe.src = bg.dataset.src;
+})();
+
+/* ----- Reveal + анимация полос ----- */
+const io = new IntersectionObserver((entries)=>{
+  entries.forEach(e=>{
+    if(e.isIntersecting){
+      e.target.classList.add('in');
+      e.target.querySelectorAll('.mini-bar>span').forEach(s=> s.style.width = s.dataset.w + '%');
+      if(e.target.id==='progress' || e.target.querySelector('#overallBar')){
+        const ob=document.getElementById('overallBar'); if(ob) ob.style.width = overall+'%';
+      }
+      io.unobserve(e.target);
+    }
+  });
+},{threshold:.12});
+document.querySelectorAll('.reveal, .step, #progress').forEach(el=>io.observe(el));
+document.getElementById('overallBar').style.width = overall + '%';
+
+/* updated date */
+document.getElementById('updated').textContent = new Date().toLocaleDateString('ru-RU',{day:'numeric',month:'long',year:'numeric'});
+</script>
+</body>
+</html>
