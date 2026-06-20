@@ -1,0 +1,43 @@
+<!DOCTYPE html><html><head><meta charset="UTF-8">
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@600;700&family=Inter:wght@500;600&display=swap" rel="stylesheet">
+<style>
+  *{margin:0;padding:0;box-sizing:border-box}
+  html,body{width:1200px;height:630px;overflow:hidden}
+  .card{width:1200px;height:630px;background:#23232A;position:relative;
+    display:flex;flex-direction:column;align-items:center;justify-content:center;
+    font-family:'Inter',sans-serif;color:#fff;
+    background-image:radial-gradient(circle at 50% 0%, #2c2c35, #1b1c20 70%);}
+  .card::before{content:"";position:absolute;inset:0;
+    background-image:repeating-linear-gradient(0deg,rgba(255,255,255,.03) 0 1px,transparent 1px 7px);}
+  .bar{position:absolute;top:0;left:0;right:0;height:10px;background:#FFC400}
+  .logo{display:flex;align-items:center;gap:26px;z-index:2}
+  .logo svg{width:120px;height:120px}
+  .word{font-family:'Oswald';font-weight:700;font-size:120px;letter-spacing:2px;line-height:1}
+  .word b{color:#FFC400}
+  .tag{font-family:'Oswald';font-weight:600;font-size:34px;letter-spacing:6px;text-transform:uppercase;
+    color:#fff;margin-top:30px;z-index:2}
+  .stats{display:flex;gap:18px;margin-top:42px;z-index:2}
+  .chip{background:rgba(255,196,0,.14);border:1.5px solid #FFC400;color:#FFC400;
+    font-weight:700;font-size:26px;padding:12px 26px;border-radius:40px;font-family:'Oswald'}
+  .loc{position:absolute;bottom:34px;font-size:24px;color:#9a98a0;letter-spacing:2px;z-index:2}
+</style></head>
+<body>
+  <div class="card">
+    <div class="bar"></div>
+    <div class="logo">
+      <svg viewBox="0 0 120 120" fill="none">
+        <path d="M38 8 H82 L112 38 V82 L82 112 H38 L8 82 V38 Z" stroke="#FFC400" stroke-width="9" stroke-linejoin="round"/>
+        <path d="M60 36 L84 60 L60 84 L36 60 Z" stroke="#FFC400" stroke-width="9" stroke-linejoin="round"/>
+        <rect x="51" y="51" width="18" height="18" rx="3" transform="rotate(45 60 60)" fill="#FFC400"/>
+      </svg>
+      <div class="word">SMART<b>WASH</b></div>
+    </div>
+    <div class="tag">Мойка самообслуживания 24/7</div>
+    <div class="stats">
+      <div class="chip">8 ПОСТОВ</div>
+      <div class="chip">24/7</div>
+      <div class="chip">АКТОБЕ</div>
+    </div>
+    <div class="loc">ул. Макаренко, 5А · прогресс реализации</div>
+  </div>
+</body></html>
