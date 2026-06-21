@@ -216,6 +216,36 @@
     border:1px solid var(--line);border-radius:10px;font-size:14px}
   .specs li b{color:var(--yellow);font-family:'Oswald';font-weight:600}
 
+  /* ---------- ПЛАН РАБОТ ---------- */
+  .plan-sum{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:32px}
+  .ps{background:linear-gradient(135deg,var(--card),#22222a);border:1px solid var(--line);
+    border-radius:14px;padding:18px 20px;box-shadow:var(--shadow)}
+  .ps-l{font-size:12px;color:var(--asphalt);text-transform:uppercase;letter-spacing:.04em}
+  .ps-v{font-family:'Oswald';font-size:26px;font-weight:700;color:var(--yellow);margin-top:5px}
+  .plan-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px}
+  .pcard{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:20px;
+    display:flex;flex-direction:column;gap:12px;transition:border-color .2s,transform .2s}
+  .pcard:hover{border-color:var(--asphalt);transform:translateY(-2px)}
+  .pcard-top{display:flex;gap:14px;align-items:flex-start}
+  .pnum{flex:none;width:38px;height:38px;border-radius:10px;display:grid;place-items:center;
+    font-family:'Oswald';font-weight:700;font-size:17px;background:rgba(255,196,0,.14);
+    color:var(--yellow);border:1px solid var(--line)}
+  .pcard-top h3{font-size:16px;line-height:1.25;font-family:'Oswald';text-transform:none;font-weight:600}
+  .pmeta{display:flex;gap:10px;flex-wrap:wrap}
+  .pm{display:inline-flex;align-items:center;gap:6px;font-size:13px;font-weight:600;
+    padding:6px 12px;border-radius:8px;background:#1c1c22;border:1px solid var(--line)}
+  .pm.cost b{color:var(--yellow);font-family:'Oswald'}
+  .pm.term b{color:#fff;font-family:'Oswald'}
+  .pm .pml{color:var(--asphalt);font-weight:500}
+  .pm.tbd{color:#b7b7c0;background:rgba(110,107,114,.18)}
+  .pnote{font-size:13px;color:#b0b0ba;line-height:1.5}
+  .pnote b{color:#d7d7de}
+  @media(max-width:860px){
+    .plan-sum{grid-template-columns:1fr}
+    .plan-grid{grid-template-columns:1fr}
+    .pcard{padding:16px}
+  }
+
   footer{padding:50px 0;text-align:center;color:var(--asphalt);font-size:14px}
   footer .logo{font-size:26px;margin-bottom:10px;color:#fff}
   .updated{color:var(--asphalt);font-size:13px;margin-top:6px}
@@ -298,6 +328,7 @@
     </div>
     <nav class="nav-links">
       <a href="#progress">Прогресс</a>
+      <a href="#plan">План работ</a>
       <a href="#about">О проекте</a>
       <a href="#location">Локация</a>
       <a href="#build">Конструкция</a>
@@ -354,6 +385,23 @@
 
     <p class="sec-sub" style="margin:-18px 0 22px">Нажмите <b>«Детализация расходов»</b> у любого этапа, чтобы раскрыть, на что и сколько потрачено.</p>
     <div class="timeline" id="timeline"></div>
+  </div>
+</section>
+
+<!-- WORKPLAN -->
+<section id="plan">
+  <div class="wrap">
+    <div class="sec-tag">Детальный план</div>
+    <h2 class="sec-title">План работ и сроки</h2>
+    <p class="sec-sub">Пошаговый перечень работ подготовительного этапа: ориентировочные суммы, сроки и примечания. Часть позиций уточняется после получения ТУ и проекта.</p>
+
+    <div class="plan-sum reveal">
+      <div class="ps"><div class="ps-l">Известная сумма работ</div><div class="ps-v" id="planKnown">—</div></div>
+      <div class="ps"><div class="ps-l">Позиций в плане</div><div class="ps-v" id="planCount">—</div></div>
+      <div class="ps"><div class="ps-l">Сумма уточняется</div><div class="ps-v" id="planTbd">—</div></div>
+    </div>
+
+    <div class="plan-grid" id="planGrid"></div>
   </div>
 </section>
 
@@ -581,6 +629,52 @@ tl.addEventListener('click', e=>{
   btn.textContent = open ? 'Свернуть ▴' : 'Детализация расходов ▾';
   if(open){ const b=det.querySelector('.budget-bar>span'); b.style.width=b.dataset.w+'%'; }
 });
+
+/* ===== ПЛАН РАБОТ ===== */
+const WORKPLAN = [
+  {n:1, name:"Прострелять участок, вызвать геодезиста", cost:15000, term:"2 дня",
+    note:"Выставить колышки по границам, сверить фактическое расположение теплотрассы."},
+  {n:2, name:"Сменить статус земельного участка", cost:null, term:null, note:""},
+  {n:3, name:"Монтаж ограждения территории", cost:1000000, term:"3 дня", note:""},
+  {n:4, name:"Новый заезд на Макаренко 5А для арендаторов", cost:1500000, term:"5 дней",
+    note:"Демонтаж забора, сруб деревьев, демонтаж бордюров и почвы, выравнивание основания под асфальт, засыпка сыпучим материалом, асфальтные работы, посадка деревьев."},
+  {n:5, name:"Бурение скважины", costText:"25 000 ₸/метр", cost:null, term:"10 дней",
+    note:"Подрядчик предоставит полный пакет документов для скважины, оплата по безналу по договору. <b>Подрядчик определён.</b>"},
+  {n:6, name:"Разработка паспорта, регистрация скважины", cost:null, term:null,
+    note:"Работы входят в стоимость бурения скважины."},
+  {n:7, name:"Посчитать удельную норму", cost:null, term:null, note:""},
+  {n:8, name:"Спец. разрешение на скважину в Казводхозе", cost:null, term:null, note:"Госпошлина."},
+  {n:9, name:"Технические условия: электроснабжение, канализация", cost:null, term:null, note:""},
+  {n:10, name:"Подключение к электроснабжению", cost:500000, term:"3 дня",
+    note:"Затраты будут известны после получения ТУ."},
+  {n:11, name:"Подключение к центральной канализации", cost:1500000, term:"10 дней",
+    note:"По согласованию с АО «Aqtobe su-energy group» возможно подключение к колодцу по ул. Рыскулова: проложить трубу д.100 через ГНБ (там асфальт — нужно разрешение в ЖКХ)."},
+  {n:12, name:"Строительно-монтажные работы автомойки", cost:null, term:null,
+    note:"Стоимость и перечень работ будут определены после предоставления проекта."}
+];
+
+const pg = document.getElementById('planGrid');
+WORKPLAN.forEach(w=>{
+  const costHtml = w.costText
+    ? `<span class="pm cost"><span class="pml">Сумма:</span> <b>${w.costText}</b></span>`
+    : (w.cost!=null
+        ? `<span class="pm cost"><span class="pml">Сумма:</span> <b>${fmt(w.cost)}</b></span>`
+        : `<span class="pm tbd">Сумма уточняется</span>`);
+  const termHtml = w.term ? `<span class="pm term"><span class="pml">Срок:</span> <b>${w.term}</b></span>` : '';
+  const noteHtml = w.note ? `<div class="pnote">${w.note}</div>` : '';
+  const el = document.createElement('div');
+  el.className = 'pcard reveal';
+  el.innerHTML = `
+    <div class="pcard-top"><div class="pnum">${w.n}</div><h3>${w.name}</h3></div>
+    <div class="pmeta">${costHtml}${termHtml}</div>
+    ${noteHtml}`;
+  pg.appendChild(el);
+});
+const planKnown = WORKPLAN.reduce((s,w)=>s+(w.cost||0),0);
+const planTbd = WORKPLAN.filter(w=>w.cost==null && !w.costText).length;
+document.getElementById('planKnown').textContent = fmt(planKnown);
+document.getElementById('planCount').textContent = WORKPLAN.length;
+document.getElementById('planTbd').textContent = planTbd + ' поз.';
 
 /* ----- Сводка ----- */
 const total = PROGRESS.length;
