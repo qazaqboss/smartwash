@@ -238,6 +238,16 @@
   .pm.term b{color:#fff;font-family:'Oswald'}
   .pm .pml{color:var(--asphalt);font-weight:500}
   .pm.tbd{color:#b7b7c0;background:rgba(110,107,114,.18)}
+  .pm.link{text-decoration:none;background:rgba(255,196,0,.10);border-color:rgba(255,196,0,.35)}
+  .pm.link b{color:var(--yellow);font-family:'Oswald'}
+  .pm.link:hover{background:rgba(255,196,0,.2)}
+  .plan-link{display:flex;align-items:flex-start;gap:12px;margin:-14px 0 30px;
+    background:var(--card);border:1px solid var(--line);border-left:3px solid var(--yellow);
+    border-radius:10px;padding:14px 16px}
+  .plan-link p{font-size:14px;color:#c7c7d0}
+  .plan-link b{color:#fff}
+  .plan-link a{color:var(--yellow);text-decoration:underline;text-underline-offset:2px}
+  .pl-line{flex:none;width:26px;height:3px;background:var(--yellow);border-radius:2px;margin-top:9px}
   .pnote{font-size:13px;color:#b0b0ba;line-height:1.5}
   .pnote b{color:#d7d7de}
   @media(max-width:860px){
@@ -399,6 +409,12 @@
       <div class="ps"><div class="ps-l">Известная сумма работ</div><div class="ps-v" id="planKnown">—</div></div>
       <div class="ps"><div class="ps-l">Позиций в плане</div><div class="ps-v" id="planCount">—</div></div>
       <div class="ps"><div class="ps-l">Сумма уточняется</div><div class="ps-v" id="planTbd">—</div></div>
+    </div>
+
+    <div class="plan-link reveal">
+      <span class="pl-line"></span>
+      <p>Подготовительный этап <b id="planShare">—</b> входит в общий бюджет проекта <b>≈ 87,9 млн ₸</b>.
+      Бурение скважины отражено в трекере <a href="#progress">«Прогресс» (этап 1)</a>, освоение бюджета — в разделе <a href="#finance">«Финансы»</a>.</p>
     </div>
 
     <div class="plan-grid" id="planGrid"></div>
@@ -638,8 +654,8 @@ const WORKPLAN = [
   {n:3, name:"Монтаж ограждения территории", cost:1000000, term:"3 дня", note:""},
   {n:4, name:"Новый заезд на Макаренко 5А для арендаторов", cost:1500000, term:"5 дней",
     note:"Демонтаж забора, сруб деревьев, демонтаж бордюров и почвы, выравнивание основания под асфальт, засыпка сыпучим материалом, асфальтные работы, посадка деревьев."},
-  {n:5, name:"Бурение скважины", costText:"25 000 ₸/метр", cost:null, term:"10 дней",
-    note:"Подрядчик предоставит полный пакет документов для скважины, оплата по безналу по договору. <b>Подрядчик определён.</b>"},
+  {n:5, name:"Бурение скважины", cost:2500000, term:"10 дней", stage:1,
+    note:"Расчёт: <b>100 м × 25 000 ₸/м = 2 500 000 ₸</b> (ориентировочно, зависит от фактической глубины). Подрядчик предоставит полный пакет документов, оплата по безналу по договору. <b>Подрядчик определён.</b>"},
   {n:6, name:"Разработка паспорта, регистрация скважины", cost:null, term:null,
     note:"Работы входят в стоимость бурения скважины."},
   {n:7, name:"Посчитать удельную норму", cost:null, term:null, note:""},
@@ -661,20 +677,23 @@ WORKPLAN.forEach(w=>{
         ? `<span class="pm cost"><span class="pml">Сумма:</span> <b>${fmt(w.cost)}</b></span>`
         : `<span class="pm tbd">Сумма уточняется</span>`);
   const termHtml = w.term ? `<span class="pm term"><span class="pml">Срок:</span> <b>${w.term}</b></span>` : '';
+  const stageHtml = w.stage ? `<a class="pm link" href="#progress"><span class="pml">В трекере:</span> <b>этап ${w.stage} ↗</b></a>` : '';
   const noteHtml = w.note ? `<div class="pnote">${w.note}</div>` : '';
   const el = document.createElement('div');
   el.className = 'pcard reveal';
   el.innerHTML = `
     <div class="pcard-top"><div class="pnum">${w.n}</div><h3>${w.name}</h3></div>
-    <div class="pmeta">${costHtml}${termHtml}</div>
+    <div class="pmeta">${costHtml}${termHtml}${stageHtml}</div>
     ${noteHtml}`;
   pg.appendChild(el);
 });
+const CAPEX_TOTAL = 87861000;
 const planKnown = WORKPLAN.reduce((s,w)=>s+(w.cost||0),0);
 const planTbd = WORKPLAN.filter(w=>w.cost==null && !w.costText).length;
 document.getElementById('planKnown').textContent = fmt(planKnown);
 document.getElementById('planCount').textContent = WORKPLAN.length;
 document.getElementById('planTbd').textContent = planTbd + ' поз.';
+document.getElementById('planShare').textContent = '≈ ' + fmt(planKnown) + ' (' + Math.round(planKnown/CAPEX_TOTAL*100) + '% бюджета)';
 
 /* ----- Сводка ----- */
 const total = PROGRESS.length;
