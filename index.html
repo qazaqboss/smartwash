@@ -62,7 +62,7 @@
   .logo{display:flex;align-items:center;gap:11px;font-family:'Oswald';font-weight:700;font-size:22px;letter-spacing:.06em}
   .logo-mark{width:30px;height:30px;flex:none}
   .logo b{color:var(--yellow)}
-  .nav-links{display:flex;gap:26px;font-size:14px;font-weight:500}
+  .nav-links{display:flex;gap:20px;font-size:14px;font-weight:500}
   .nav-links a{color:#cfcfd6;transition:color .2s}
   .nav-links a:hover{color:var(--yellow)}
   .burger{display:none;background:none;border:0;color:#fff;font-size:26px;cursor:pointer}
@@ -260,6 +260,53 @@
     .pcard{padding:16px}
   }
 
+  /* ---------- ДОРОЖНАЯ КАРТА ---------- */
+  .rq-callout{display:flex;gap:16px;align-items:flex-start;background:linear-gradient(135deg,rgba(255,196,0,.12),var(--card));
+    border:1px solid rgba(255,196,0,.4);border-radius:16px;padding:20px 22px;margin-bottom:34px}
+  .rq-ic{flex:none;width:42px;height:42px;border-radius:50%;background:var(--yellow);color:var(--black);
+    font-family:'Oswald';font-weight:700;font-size:24px;display:grid;place-items:center}
+  .rq-callout b{color:#fff;font-size:16px}
+  .rq-callout p{font-size:14px;color:#c7c7d0;margin-top:5px}
+
+  .roadmap{position:relative;display:grid;gap:18px}
+  .roadmap::before{content:"";position:absolute;left:26px;top:10px;bottom:10px;width:2px;
+    background:linear-gradient(var(--yellow),var(--line));opacity:.4}
+  .rphase{position:relative;display:grid;grid-template-columns:54px 1fr;gap:20px;align-items:start;
+    background:var(--card);border:1px solid var(--line);border-radius:16px;padding:22px}
+  .rphase.now{border-color:rgba(255,196,0,.5)}
+  .rbadge{width:54px;height:54px;border-radius:14px;display:grid;place-items:center;z-index:1;
+    font-family:'Oswald';font-weight:700;font-size:24px;background:#1c1c22;border:2px solid var(--line);color:#fff}
+  .rphase.now .rbadge{background:var(--yellow);border-color:var(--yellow);color:var(--black)}
+  .rphase.parallel .rbadge{border-color:var(--green);color:var(--green)}
+  .rhead{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:14px}
+  .rhead h3{font-size:19px;font-family:'Oswald';text-transform:none;font-weight:600}
+  .rwhen{font-size:12px;font-weight:700;padding:5px 12px;border-radius:20px;white-space:nowrap;
+    text-transform:uppercase;letter-spacing:.03em}
+  .rwhen.now{background:var(--yellow);color:var(--black)}
+  .rwhen.gate{background:rgba(255,140,0,.16);color:#ff9d2e;border:1px solid rgba(255,140,0,.4)}
+  .rwhen.parallel{background:rgba(52,199,89,.16);color:var(--green);border:1px solid rgba(52,199,89,.4)}
+  .rwhen.next{background:rgba(110,107,114,.2);color:#b7b7c0}
+  .rtasks{list-style:none;display:grid;gap:12px}
+  .rtasks li{display:grid;grid-template-columns:24px 1fr;gap:12px;align-items:start}
+  .rdot{width:24px;height:24px;border-radius:50%;display:grid;place-items:center;font-size:13px;font-weight:700;
+    background:rgba(52,199,89,.15);color:var(--green);border:1px solid rgba(52,199,89,.35)}
+  .rtasks li.rq .rdot{background:var(--yellow);color:var(--black);border-color:var(--yellow)}
+  .rtasks li b{font-size:15px;color:#f0f0f4;font-weight:600}
+  .rnote{display:block;font-size:13px;color:#a9a9b3;margin-top:4px;line-height:1.5}
+  .rpar{margin-top:16px;background:rgba(52,199,89,.07);border:1px dashed rgba(52,199,89,.4);
+    border-radius:12px;padding:14px 16px}
+  .rpar-h{font-size:13px;font-weight:700;color:var(--green);margin-bottom:8px}
+  .rpar ul{list-style:none;display:grid;gap:6px}
+  .rpar li{font-size:13.5px;color:#c2c2cb;padding-left:16px;position:relative}
+  .rpar li::before{content:"—";position:absolute;left:0;color:var(--green)}
+  @media(max-width:860px){
+    .rphase{grid-template-columns:42px 1fr;gap:14px;padding:16px}
+    .rbadge{width:42px;height:42px;font-size:19px;border-radius:11px}
+    .roadmap::before{left:20px}
+    .rhead h3{font-size:17px}
+    .rq-callout{padding:16px}
+  }
+
   footer{padding:50px 0;text-align:center;color:var(--asphalt);font-size:14px}
   footer .logo{font-size:26px;margin-bottom:10px;color:#fff}
   .updated{color:var(--asphalt);font-size:13px;margin-top:6px}
@@ -343,6 +390,7 @@
     <nav class="nav-links">
       <a href="#progress">Прогресс</a>
       <a href="#plan">План работ</a>
+      <a href="#roadmap-sec">Дорожная карта</a>
       <a href="#about">О проекте</a>
       <a href="#location">Локация</a>
       <a href="#build">Конструкция</a>
@@ -423,6 +471,25 @@
     </div>
 
     <div class="plan-grid" id="planGrid"></div>
+  </div>
+</section>
+
+<!-- ROADMAP -->
+<section id="roadmap-sec">
+  <div class="wrap">
+    <div class="sec-tag">Стратегия</div>
+    <h2 class="sec-title">Дорожная карта</h2>
+    <p class="sec-sub">Последовательность этапов с учётом зависимостей: что делаем сейчас, что — только после согласований, а что можно вести параллельно, чтобы не терять время.</p>
+
+    <div class="rq-callout reveal">
+      <span class="rq-ic">?</span>
+      <div>
+        <b>Ключевой вопрос: есть ли готовый проект по мойке в Караганде?</b>
+        <p>Если да — проще адаптировать его под наш объект: решения аналогичные. Это ускорит старт и разблокирует согласования.</p>
+      </div>
+    </div>
+
+    <div class="roadmap" id="roadmap"></div>
   </div>
 </section>
 
@@ -694,6 +761,69 @@ WORKPLAN.forEach(w=>{
     ${noteHtml}`;
   pg.appendChild(el);
 });
+/* ===== ДОРОЖНАЯ КАРТА (логика этапов) ===== */
+const ROADMAP = [
+  {phase:"A", title:"Проект и целевое назначение", when:"Делаем сейчас", tone:"now",
+    tasks:[
+      {t:"Получить / адаптировать проект здания", q:true,
+        note:"Уточнить: есть ли готовый проект по мойке в Караганде. Если да — проще адаптировать его: решения у нас в принципе аналогичные (иначе объект не ввели бы в эксплуатацию)."},
+      {t:"Изменить целевое назначение участка",
+        note:"С Азатом договорённость есть — назначена встреча по смене целевого назначения."}
+    ],
+    parallel:[
+      "Начать копать фундамент и делать приямки под каждый бокс",
+      "Закопать септик 30–40 м³",
+      "Нанять сварщиков с материалом — варить фермы потихоньку"
+    ]},
+  {phase:"B", title:"Согласования — «бегунок» по инстанциям", when:"После проекта и целевки", tone:"gate",
+    tasks:[
+      {t:"Пройти согласования по всем инстанциям",
+        note:"Разрешение на проведение работ и на любое подключение коммуникаций. Возможно только с готовым проектом и корректной целевкой."}
+    ]},
+  {phase:"C", title:"Подготовительные работы параллельно", when:"Во время согласований", tone:"parallel",
+    tasks:[
+      {t:"Огородить территорию и сделать альтернативный въезд", note:"Заезд на территорию «Инвиво»."},
+      {t:"Легализовать скважину", note:"Через Казводхоз и Акбулак."},
+      {t:"Получить заключение о качестве и безопасности воды"},
+      {t:"Предварительный расчёт подключения канализации",
+        note:"Врезка в коллектор на Рыскулова: закупить материалы и определить подрядчика."}
+    ]},
+  {phase:"D", title:"Основные строительные работы", when:"После всех документов и согласований", tone:"next",
+    tasks:[
+      {t:"Врезка канализации"},
+      {t:"Заказ изготовления конструкций здания"},
+      {t:"Заливка фундаментов и полов"},
+      {t:"Получить ТУ на все коммуникации", note:"Будет много нюансов по газу."},
+      {t:"Стены → кровля → облицовка → заказ оборудования"}
+    ]}
+];
+
+const rm = document.getElementById('roadmap');
+if(rm){
+  ROADMAP.forEach(p=>{
+    const tasks = p.tasks.map(t=>`
+      <li class="${t.q?'rq':''}">
+        <span class="rdot">${t.q?'?':'✓'}</span>
+        <div><b>${t.t}</b>${t.note?`<span class="rnote">${t.note}</span>`:''}</div>
+      </li>`).join('');
+    const par = p.parallel ? `
+      <div class="rpar">
+        <div class="rpar-h">⚡ Параллельно можно начинать уже сейчас:</div>
+        <ul>${p.parallel.map(x=>`<li>${x}</li>`).join('')}</ul>
+      </div>` : '';
+    const el = document.createElement('div');
+    el.className = 'rphase reveal '+p.tone;
+    el.innerHTML = `
+      <div class="rbadge">${p.phase}</div>
+      <div class="rbody">
+        <div class="rhead"><h3>${p.title}</h3><span class="rwhen ${p.tone}">${p.when}</span></div>
+        <ul class="rtasks">${tasks}</ul>
+        ${par}
+      </div>`;
+    rm.appendChild(el);
+  });
+}
+
 const CAPEX_TOTAL = 87861000;
 const planKnown = WORKPLAN.reduce((s,w)=>s+(w.cost||0),0);
 const planFact = WORKPLAN.reduce((s,w)=>s+(w.fact||0),0);
