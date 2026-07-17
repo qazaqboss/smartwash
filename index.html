@@ -646,8 +646,8 @@ const STATUS = {done:"Готово", in_progress:"В работе", planned:"З�
    spends — фактические расходы; вписывайте реальные траты сюда: {date, item, amount_tg}.
    Факт по этапу считается автоматически как сумма spends. */
 const PROGRESS = [
-  {id:1, stage:"Бурение и обустройство скважины", status:"in_progress", percent:70, planned_tg:4000000,
-    desc:"Источник воды для мойки — независимость от центрального водоснабжения и низкая себестоимость. Пробурено на 27 м, вода найдена, установлен насос — вода идёт постоянно ✓ Оформляется паспорт скважины. Далее: обвязка и подвод к насосной.",
+  {id:1, stage:"Бурение и обустройство скважины", status:"done", percent:100, planned_tg:970530,
+    desc:"Источник воды для мойки — независимость от центрального водоснабжения и низкая себестоимость. Пробурено на 27 м, вода найдена, установлен насос — идёт постоянная подача воды ✓ Скважина обустроена и ограждена, оформляется паспорт. Этап завершён.",
     spends:[
       {date:"2026-06", item:"Бурение скважины — 27 м, найдена вода", amount_tg:675000},
       {date:"2026-07", item:"Насос и обустройство — постоянная подача воды", amount_tg:90000},
@@ -705,13 +705,13 @@ PROGRESS.forEach(p=>{
       <p>${p.desc}</p>
       <div class="mini-bar"><span data-w="${p.percent}"></span></div>
       <div class="step-money">
-        <span class="mtag">План: <b>${fmt(planned)}</b></span>
+        ${p.status==='done' ? '' : `<span class="mtag">План: <b>${fmt(planned)}</b></span>`}
         <span class="mtag">Факт: <b class="${over?'over':'fact'}">${fmt(spent)}</b></span>
         <button class="toggle" aria-expanded="false">Детализация расходов ▾</button>
       </div>
       <div class="details">
         <div class="budget-bar"><span class="${over?'over':''}" data-w="${ratio}"></span></div>
-        <div class="budget-cap">Освоено ${ratio}% бюджета этапа${over?' · перерасход':''}</div>
+        <div class="budget-cap">${p.status==='done' ? 'Оплачено по факту · этап завершён ✓' : 'Освоено '+ratio+'% бюджета этапа'+(over?' · перерасход':'')}</div>
         <table class="spend-tbl">
           <thead><tr><th>Период</th><th>Статья</th><th class="num">Сумма</th></tr></thead>
           <tbody>${rows}</tbody>
