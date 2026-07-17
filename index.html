@@ -254,6 +254,15 @@
   .pl-line{flex:none;width:26px;height:3px;background:var(--yellow);border-radius:2px;margin-top:9px}
   .pnote{font-size:13px;color:#b0b0ba;line-height:1.5}
   .pnote b{color:#d7d7de}
+  .pspends{margin-top:4px;background:#1c1c22;border:1px solid var(--line);border-radius:12px;padding:12px 14px}
+  .pspends-h{font-size:12px;font-weight:700;color:var(--green);text-transform:uppercase;letter-spacing:.03em;margin-bottom:8px}
+  .psrow{display:flex;justify-content:space-between;gap:14px;font-size:13.5px;color:#c2c2cb;
+    padding:6px 0;border-bottom:1px solid rgba(255,255,255,.05)}
+  .psrow span{flex:1}
+  .psrow b{font-family:'Oswald';font-weight:600;color:#e6e6ea;white-space:nowrap}
+  .psrow.total{border-bottom:0;border-top:1px solid var(--line);margin-top:2px;padding-top:9px;font-weight:700}
+  .psrow.total span{color:#fff;font-weight:600}
+  .psrow.total b{color:var(--green);font-size:15px}
   @media(max-width:860px){
     .plan-sum{grid-template-columns:1fr}
     .plan-grid{grid-template-columns:1fr}
@@ -637,11 +646,15 @@ const STATUS = {done:"Готово", in_progress:"В работе", planned:"З�
    spends — фактические расходы; вписывайте реальные траты сюда: {date, item, amount_tg}.
    Факт по этапу считается автоматически как сумма spends. */
 const PROGRESS = [
-  {id:1, stage:"Бурение скважины", status:"in_progress", percent:60, planned_tg:4000000,
-    desc:"Источник воды для мойки — независимость от центрального водоснабжения и низкая себестоимость. Бурение, обсадка, насос, обвязка, подвод к насосной. Пробурено на 27 м, установлен насос — вода идёт постоянно ✓ Далее: обвязка и подвод к насосной.",
+  {id:1, stage:"Бурение и обустройство скважины", status:"in_progress", percent:70, planned_tg:4000000,
+    desc:"Источник воды для мойки — независимость от центрального водоснабжения и низкая себестоимость. Пробурено на 27 м, вода найдена, установлен насос — вода идёт постоянно ✓ Оформляется паспорт скважины. Далее: обвязка и подвод к насосной.",
     spends:[
       {date:"2026-06", item:"Бурение скважины — 27 м, найдена вода", amount_tg:675000},
-      {date:"2026-07", item:"Насос и обустройство скважины — постоянная подача воды", amount_tg:90000}
+      {date:"2026-07", item:"Насос и обустройство — постоянная подача воды", amount_tg:90000},
+      {date:"2026-07", item:"Ограждение скважины", amount_tg:35000},
+      {date:"2026-07", item:"Кабель 60 м + розетки (наличка)", amount_tg:20530},
+      {date:"2026-07", item:"Разработка паспорта скважины", amount_tg:100000},
+      {date:"2026-07", item:"Регистрация паспорта скважины", amount_tg:50000}
     ]},
   {id:2, stage:"Земляные работы и фундамент", status:"planned", percent:0, planned_tg:9000000,
     desc:"Подготовка площадки, разметка, рытьё, ленточно-плитный фундамент под металлокаркас.", spends:[]},
@@ -721,44 +734,67 @@ tl.addEventListener('click', e=>{
 
 /* ===== ПЛАН РАБОТ ===== */
 const WORKPLAN = [
-  {n:1, name:"Прострелять участок, вызвать геодезиста", cost:15000, term:"2 дня", fact:70000,
-    note:"Выставить колышки по границам, сверить фактическое расположение теплотрассы. <b>Оплачено геодезисту: 70 000 ₸ за отстреливание территории.</b>"},
+  {n:1, name:"Прострелять участок, вызвать геодезиста", cost:15000, term:"2 дня",
+    spends:[{t:"Геодезист — отстреливание территории", a:70000}],
+    note:"Выставить колышки по границам, сверить фактическое расположение теплотрассы."},
   {n:2, name:"Сменить статус земельного участка", cost:null, term:null, note:""},
-  {n:3, name:"Монтаж ограждения территории", cost:1000000, term:"3 дня", note:""},
+  {n:3, name:"Монтаж ограждения территории", cost:1000000, term:"3 дня", cash:true,
+    spends:[
+      {t:"Рабочие и разнорабочие (7 оплат × 15 000)", a:105000},
+      {t:"Петушок", a:20000},
+      {t:"Сварка", a:10000},
+      {t:"Трубы (материалы) + доставка", a:11500},
+      {t:"Доставка", a:15000}
+    ],
+    note:"Все оплаты — наличными."},
   {n:4, name:"Новый заезд на Макаренко 5А для арендаторов", cost:1500000, term:"5 дней",
     note:"Демонтаж забора, сруб деревьев, демонтаж бордюров и почвы, выравнивание основания под асфальт, засыпка сыпучим материалом, асфальтные работы, посадка деревьев."},
-  {n:5, name:"Бурение и обустройство скважины", cost:2500000, term:"10 дней", stage:1, fact:765000,
-    note:"<b>Пробурено на 27 м — найдена вода ✓</b> Оплачено: бурение <b>675 000 ₸</b> (27 м × 25 000 ₸/м) + насос и обустройство скважины <b>90 000 ₸</b> для постоянной подачи воды. Итого по факту <b>765 000 ₸</b> — дешевле плана."},
-  {n:6, name:"Разработка паспорта, регистрация скважины", cost:null, term:null,
-    note:"Работы входят в стоимость бурения скважины."},
-  {n:7, name:"Посчитать удельную норму", cost:null, term:null, note:""},
-  {n:8, name:"Спец. разрешение на скважину в Казводхозе", cost:null, term:null, note:"Госпошлина."},
-  {n:9, name:"Технические условия: электроснабжение, канализация", cost:null, term:null, note:""},
-  {n:10, name:"Подключение к электроснабжению", cost:500000, term:"3 дня",
+  {n:5, name:"Скважина: бурение, обустройство, паспорт", cost:2500000, term:"10 дней", stage:1,
+    spends:[
+      {t:"Бурение — 27 м, найдена вода (завершено ✓)", a:675000},
+      {t:"Насос и обустройство — постоянная подача воды", a:90000},
+      {t:"Ограждение скважины", a:35000},
+      {t:"Кабель 60 м + розетки (наличка)", a:20530},
+      {t:"Разработка паспорта", a:100000},
+      {t:"Регистрация паспорта скважины", a:50000}
+    ],
+    note:"<b>Пробурено на 27 м — вода найдена, бурение завершено ✓</b> Скважина обустроена, идёт постоянная подача воды. Оформляется паспорт."},
+  {n:6, name:"Посчитать удельную норму", cost:null, term:null, note:""},
+  {n:7, name:"Спец. разрешение на скважину в Казводхозе", cost:null, term:null, note:"Госпошлина."},
+  {n:8, name:"Технические условия: электроснабжение, канализация", cost:null, term:null, note:""},
+  {n:9, name:"Подключение к электроснабжению", cost:500000, term:"3 дня",
     note:"Затраты будут известны после получения ТУ."},
-  {n:11, name:"Подключение к центральной канализации", cost:10000000, term:"10 дней",
+  {n:10, name:"Подключение к центральной канализации", cost:10000000, term:"10 дней",
     note:"По согласованию с АО «Aqtobe su-energy group» возможно подключение к колодцу по ул. Рыскулова: проложить трубу д.100 через ГНБ (там асфальт — нужно разрешение в ЖКХ)."},
-  {n:12, name:"Строительно-монтажные работы автомойки", cost:null, term:null,
+  {n:11, name:"Строительно-монтажные работы автомойки", cost:null, term:null,
     note:"Стоимость и перечень работ будут определены после предоставления проекта."}
 ];
 
+const factOf = w => w.spends ? w.spends.reduce((s,x)=>s+(x.a||0),0) : (w.fact||0);
 const pg = document.getElementById('planGrid');
 WORKPLAN.forEach(w=>{
+  const spent = factOf(w);
   const costHtml = w.costText
     ? `<span class="pm cost"><span class="pml">Сумма:</span> <b>${w.costText}</b></span>`
     : (w.cost!=null
         ? `<span class="pm cost"><span class="pml">Сумма:</span> <b>${fmt(w.cost)}</b></span>`
         : `<span class="pm tbd">Сумма уточняется</span>`);
-  const factHtml = w.fact ? `<span class="pm fact"><span class="pml">Факт:</span> <b>${fmt(w.fact)}</b></span>` : '';
+  const factHtml = spent ? `<span class="pm fact"><span class="pml">Факт:</span> <b>${fmt(spent)}</b></span>` : '';
   const termHtml = w.term ? `<span class="pm term"><span class="pml">Срок:</span> <b>${w.term}</b></span>` : '';
   const stageHtml = w.stage ? `<a class="pm link" href="#progress"><span class="pml">В трекере:</span> <b>этап ${w.stage} ↗</b></a>` : '';
   const noteHtml = w.note ? `<div class="pnote">${w.note}</div>` : '';
+  const spendsHtml = (w.spends && w.spends.length) ? `
+    <div class="pspends">
+      <div class="pspends-h">Расходы по факту${w.cash?' · наличными':''}:</div>
+      ${w.spends.map(x=>`<div class="psrow"><span>${x.t}</span><b>${fmt(x.a)}</b></div>`).join('')}
+      <div class="psrow total"><span>Итого</span><b>${fmt(spent)}</b></div>
+    </div>` : '';
   const el = document.createElement('div');
-  el.className = 'pcard reveal' + (w.fact ? ' paid' : '');
+  el.className = 'pcard reveal' + (spent ? ' paid' : '');
   el.innerHTML = `
     <div class="pcard-top"><div class="pnum">${w.n}</div><h3>${w.name}</h3></div>
     <div class="pmeta">${costHtml}${factHtml}${termHtml}${stageHtml}</div>
-    ${noteHtml}`;
+    ${noteHtml}${spendsHtml}`;
   pg.appendChild(el);
 });
 /* ===== ДОРОЖНАЯ КАРТА (логика этапов) ===== */
@@ -826,7 +862,7 @@ if(rm){
 
 const CAPEX_TOTAL = 87861000;
 const planKnown = WORKPLAN.reduce((s,w)=>s+(w.cost||0),0);
-const planFact = WORKPLAN.reduce((s,w)=>s+(w.fact||0),0);
+const planFact = WORKPLAN.reduce((s,w)=>s+factOf(w),0);
 const planTbd = WORKPLAN.filter(w=>w.cost==null && !w.costText).length;
 document.getElementById('planKnown').textContent = fmt(planKnown);
 document.getElementById('planFact').textContent = fmt(planFact);
