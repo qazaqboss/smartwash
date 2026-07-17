@@ -263,6 +263,12 @@
   .psrow.total{border-bottom:0;border-top:1px solid var(--line);margin-top:2px;padding-top:9px;font-weight:700}
   .psrow.total span{color:#fff;font-weight:600}
   .psrow.total b{color:var(--green);font-size:15px}
+  .ptag{display:inline-block;font-size:10.5px;font-weight:700;padding:2px 7px;border-radius:6px;
+    vertical-align:middle;text-transform:uppercase;letter-spacing:.02em}
+  .ptag.ofc{background:rgba(52,199,89,.16);color:var(--green);border:1px solid rgba(52,199,89,.35)}
+  .ptag.nal{background:rgba(255,196,0,.14);color:var(--yellow);border:1px solid rgba(255,196,0,.35)}
+  .pssplit{display:flex;align-items:center;flex-wrap:wrap;gap:4px;font-family:'Oswald';font-weight:600;
+    font-size:13px;color:#cfcfd6;padding-top:9px}
   @media(max-width:860px){
     .plan-sum{grid-template-columns:1fr}
     .plan-grid{grid-template-columns:1fr}
@@ -737,16 +743,22 @@ const WORKPLAN = [
   {n:1, name:"Прострелять участок, вызвать геодезиста", cost:15000, term:"2 дня",
     spends:[{t:"Геодезист — отстреливание территории", a:70000}],
     note:"Выставить колышки по границам, сверить фактическое расположение теплотрассы."},
-  {n:2, name:"Сменить статус земельного участка", cost:null, term:null, note:""},
-  {n:3, name:"Монтаж ограждения территории", cost:1000000, term:"3 дня", cash:true,
+  {n:2, name:"Сменить статус земельного участка (целевка)", cost:2300000, term:null,
     spends:[
-      {t:"Рабочие и разнорабочие (7 оплат × 15 000)", a:105000},
-      {t:"Петушок", a:20000},
-      {t:"Сварка", a:10000},
-      {t:"Трубы (материалы) + доставка", a:11500},
-      {t:"Доставка", a:15000}
+      {t:"Проект для изменения целевого назначения на мойку", a:2300000}
     ],
-    note:"Все оплаты — наличными."},
+    note:"Оплачен проект на изменение целевого назначения участка под мойку."},
+  {n:3, name:"Монтаж ограждения территории", cost:1000000, term:"3 дня",
+    spends:[
+      {t:"Металл — труба проф. 40×40×1,5", a:78000},
+      {t:"Цемент М500", a:52500},
+      {t:"Рабочие и разнорабочие (7 оплат × 15 000)", a:105000, cash:true},
+      {t:"Петушок", a:20000, cash:true},
+      {t:"Сварка", a:10000, cash:true},
+      {t:"Трубы (материалы) + доставка", a:11500, cash:true},
+      {t:"Доставка", a:15000, cash:true}
+    ],
+    note:"Работы в процессе. Материалы — официально, работы — наличными."},
   {n:4, name:"Новый заезд на Макаренко 5А для арендаторов", cost:1500000, term:"5 дней",
     note:"Демонтаж забора, сруб деревьев, демонтаж бордюров и почвы, выравнивание основания под асфальт, засыпка сыпучим материалом, асфальтные работы, посадка деревьев."},
   {n:5, name:"Скважина: бурение, обустройство, паспорт", cost:2500000, term:"10 дней", stage:1,
@@ -754,7 +766,7 @@ const WORKPLAN = [
       {t:"Бурение — 27 м, найдена вода (завершено ✓)", a:675000},
       {t:"Насос и обустройство — постоянная подача воды", a:90000},
       {t:"Ограждение скважины", a:35000},
-      {t:"Кабель 60 м + розетки (наличка)", a:20530},
+      {t:"Кабель 60 м + розетки", a:20530, cash:true},
       {t:"Разработка паспорта", a:100000},
       {t:"Регистрация паспорта скважины", a:50000}
     ],
@@ -783,11 +795,15 @@ WORKPLAN.forEach(w=>{
   const termHtml = w.term ? `<span class="pm term"><span class="pml">Срок:</span> <b>${w.term}</b></span>` : '';
   const stageHtml = w.stage ? `<a class="pm link" href="#progress"><span class="pml">В трекере:</span> <b>этап ${w.stage} ↗</b></a>` : '';
   const noteHtml = w.note ? `<div class="pnote">${w.note}</div>` : '';
+  const cashSum = w.spends ? w.spends.filter(x=>x.cash).reduce((s,x)=>s+x.a,0) : 0;
+  const ofcSum = spent - cashSum;
+  const mixed = cashSum>0 && ofcSum>0;
   const spendsHtml = (w.spends && w.spends.length) ? `
     <div class="pspends">
-      <div class="pspends-h">Расходы по факту${w.cash?' · наличными':''}:</div>
-      ${w.spends.map(x=>`<div class="psrow"><span>${x.t}</span><b>${fmt(x.a)}</b></div>`).join('')}
+      <div class="pspends-h">Расходы по факту:</div>
+      ${w.spends.map(x=>`<div class="psrow"><span>${x.t} <span class="ptag ${x.cash?'nal':'ofc'}">${x.cash?'нал.':'офиц.'}</span></span><b>${fmt(x.a)}</b></div>`).join('')}
       <div class="psrow total"><span>Итого</span><b>${fmt(spent)}</b></div>
+      ${mixed?`<div class="pssplit"><span class="ptag ofc">офиц.</span> ${fmt(ofcSum)} &nbsp;·&nbsp; <span class="ptag nal">нал.</span> ${fmt(cashSum)}</div>`:''}
     </div>` : '';
   const el = document.createElement('div');
   el.className = 'pcard reveal' + (spent ? ' paid' : '');
@@ -863,7 +879,7 @@ if(rm){
 const CAPEX_TOTAL = 87861000;
 const planKnown = WORKPLAN.reduce((s,w)=>s+(w.cost||0),0);
 const planFact = WORKPLAN.reduce((s,w)=>s+factOf(w),0);
-const planTbd = WORKPLAN.filter(w=>w.cost==null && !w.costText).length;
+const planTbd = WORKPLAN.filter(w=>w.cost==null && !w.costText && factOf(w)===0).length;
 document.getElementById('planKnown').textContent = fmt(planKnown);
 document.getElementById('planFact').textContent = fmt(planFact);
 document.getElementById('planCount').textContent = WORKPLAN.length;
