@@ -92,6 +92,14 @@
 
   /* ---------- SECTIONS ---------- */
   section{padding:74px 0;border-bottom:1px solid var(--line)}
+  .live-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:22px 0 18px}
+  .live-stats .ls{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px 16px}
+  .live-stats .ls-v{font-family:Oswald,"Arial Black",sans-serif;font-size:24px;color:var(--yellow);font-variant-numeric:tabular-nums}
+  .live-stats .ls-l{font-size:12px;opacity:.7;text-transform:uppercase;letter-spacing:.06em}
+  .live-frame{border-radius:14px;overflow:hidden;background:#23232A}
+  .live-frame iframe{display:block;width:100%;height:760px;border:0}
+  @media (max-width:760px){.live-stats{grid-template-columns:repeat(2,1fr)}.live-frame iframe{height:560px}}
+
   .sec-tag{color:var(--yellow);font-family:'Oswald';font-weight:600;font-size:14px;letter-spacing:.18em;text-transform:uppercase}
   .sec-title{font-size:clamp(28px,4vw,44px);margin:8px 0 10px}
   .sec-sub{color:#bcbcc6;max-width:680px;margin-bottom:36px}
@@ -407,6 +415,7 @@
       <a href="#plan">План работ</a>
       <a href="#roadmap-sec">Дорожная карта</a>
       <a href="#about">О проекте</a>
+      <a href="#live">Как работает</a>
       <a href="#location">Локация</a>
       <a href="#build">Конструкция</a>
       <a href="#finance">Финансы</a>
@@ -433,6 +442,7 @@
     <div class="cta-row">
       <a href="#progress" class="btn btn-primary">→ Прогресс реализации</a>
       <a href="#about" class="btn btn-ghost">О проекте</a>
+      <a href="#live" class="btn btn-ghost">▶ Как работает мойка</a>
     </div>
   </div>
 </section>
@@ -518,6 +528,24 @@
       <div class="card reveal"><h3>8 постов · легковые</h3><p>Все боксы рассчитаны на легковые авто. Насосная по центру здания — короткие трассы и удобное обслуживание.</p></div>
       <div class="card reveal"><h3>Тёплый контур</h3><p>Ролл-шторы (рольставни) на боксах и утепление — стабильная работа зимой. LED-освещение постов и фасада.</p></div>
       <div class="card reveal"><h3>Своя скважина</h3><p>Собственный источник воды — независимость от водоснабжения и низкая себестоимость. Терминалы: нал/безнал/QR/Kaspi.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- LIVE: how the wash works (animated cutaway) -->
+<section id="live">
+  <div class="wrap">
+    <div class="sec-tag">Как работает</div>
+    <h2 class="sec-title">Мойка в движении: 8 боксов, 24/7</h2>
+    <p class="sec-sub">Живой разрез здания по эскизу: машина заезжает, рольставня поднимается, водитель платит на терминале (Kaspi QR / карта) и моет авто по программе — вода АВД, пена, мойка, воск, осмос, — затем выезжает. Поток машин взят из финансовой модели: ≈280 авто в сутки при среднем чеке 900 ₸. Время ускорено в 60 раз. Нажмите на бокс, чтобы следить за ним.</p>
+    <div class="live-stats">
+      <div class="ls"><div class="ls-v">≈280</div><div class="ls-l">авто в сутки</div></div>
+      <div class="ls"><div class="ls-v">900 ₸</div><div class="ls-l">средний чек</div></div>
+      <div class="ls"><div class="ls-v">≈252 тыс ₸</div><div class="ls-l">выручка в сутки</div></div>
+      <div class="ls"><div class="ls-v">7,56 млн ₸</div><div class="ls-l">выручка в месяц</div></div>
+    </div>
+    <div class="live-frame">
+      <iframe id="liveFrame" src="live.html" title="SmartWash: анимация работы мойки" loading="lazy" scrolling="no"></iframe>
     </div>
   </div>
 </section>
@@ -947,6 +975,9 @@ document.getElementById('overallBar').style.width = overall + '%';
 
 /* updated date */
 document.getElementById('updated').textContent = new Date().toLocaleDateString('ru-RU',{day:'numeric',month:'long',year:'numeric'});
+</script>
+<script>
+addEventListener("message",function(e){var d=e.data;if(d&&d.swLiveHeight){var f=document.getElementById("liveFrame");if(f)f.style.height=Math.ceil(d.swLiveHeight)+"px";}});
 </script>
 </body>
 </html>
