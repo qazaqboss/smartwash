@@ -1,4 +1,4 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>SMARTWASH — как работает мойка</title><style>
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>SMARTWASH — как работает мойка</title><script>if(new URLSearchParams(location.search).has("bg"))document.documentElement.classList.add("bg")</script><style>
 .iso{
   --anatomy-page:#0b0b0b;--anatomy-card:#131313;--anatomy-text:#a3a3a3;--anatomy-strong:#e6e6e6;--anatomy-muted:#6e6e6e;
   --anatomy-paper:#131313;--anatomy-face:#1b1b1b;--anatomy-top:#1c1c1c;
@@ -139,6 +139,15 @@ body[data-theme="light"] .sw-spray[data-kind="foam"]{stroke:#b9b9c0}
 .sw-start{all:unset;cursor:pointer;position:absolute;left:50%;top:46%;transform:translate(-50%,-50%);display:flex;flex-direction:column;align-items:center;gap:4px;padding:18px 34px 16px;border-radius:16px;background:#FFC400;color:#16181C;font:600 20px/1.1 var(--anatomy-mono);letter-spacing:.08em;text-transform:uppercase;box-shadow:0 12px 40px #0008,0 0 0 6px #FFC40033;transition:transform .2s var(--anatomy-ease),box-shadow .2s}
 .sw-start:hover{transform:translate(-50%,-50%) scale(1.04);box-shadow:0 14px 44px #0009,0 0 0 9px #FFC40040}
 .sw-start:focus-visible{outline:3px solid #fff;outline-offset:4px}
+.sw-start[hidden]{display:none}
+/* ?bg — фоновый режим для hero главной: только сцена, без панелей */
+html.bg,html.bg body{height:100%;overflow:hidden;background:var(--anatomy-card,#131313)}
+html.bg .iso-plate-corners,html.bg .sw-bar,html.bg .iso-legend,html.bg .sw-start{display:none!important}
+html.bg .iso-page{width:100%;height:100%;margin:0}
+html.bg .iso-figure{margin:0;height:100%}
+html.bg .iso-plate{padding:0;height:100%;box-shadow:none}
+html.bg .iso-stage{height:100%}
+html.bg .iso-stage .iso-svg{width:100%;height:100%}
 .sw-start-ico{font-size:30px;line-height:1}
 .sw-start small{font:400 11px/1.2 var(--anatomy-mono);letter-spacing:.04em;text-transform:none;opacity:.75}
 .iso-stage[data-paused] svg{filter:saturate(.85)}
@@ -1497,6 +1506,10 @@ startBtn.addEventListener("click", () => setPlaying(true));
 playBtn.addEventListener("click", () => setPlaying(paused));
 document.querySelector("[data-reset]").addEventListener("click", () => { resetAll(); setPlaying(true); });
 setPlaying(false);
+if (document.documentElement.classList.contains("bg")) {
+  svgEl.setAttribute("preserveAspectRatio", "xMidYMid slice");
+  if (!matchMedia("(prefers-reduced-motion: reduce)").matches) setPlaying(true);
+}
 window.__sw = { frame: (dt) => { step(dt); dtLast = dt; draw(); }, pause: () => { paused = true; }, play: () => setPlaying(true), select: (i) => { selected = i; userPickedAt = 1e9; lastStatus = ''; }, step: (s) => { for (let t = 0; t < s; t += 1 / 30) step(1 / 30); dtLast = 1; draw(); }, cars: () => cars, bays };
 run();
-</script><script>(function(){function h(){try{parent.postMessage({swLiveHeight:Math.ceil(document.querySelector(".iso-page").getBoundingClientRect().height)+2},"*")}catch(e){}}addEventListener("load",h);addEventListener("resize",h);new ResizeObserver(h).observe(document.querySelector(".iso-page"));setInterval(h,1500);})();</script></body></html>
+</script><script>(function(){if(document.documentElement.classList.contains("bg"))return;function h(){try{parent.postMessage({swLiveHeight:Math.ceil(document.querySelector(".iso-page").getBoundingClientRect().height)+2},"*")}catch(e){}}addEventListener("load",h);addEventListener("resize",h);new ResizeObserver(h).observe(document.querySelector(".iso-page"));setInterval(h,1500);})();</script></body></html>

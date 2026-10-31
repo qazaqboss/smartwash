@@ -70,8 +70,8 @@
 
   /* ---------- HERO ---------- */
   .hero{position:relative;overflow:hidden;border-bottom:1px solid var(--line)}
-  .hero-bg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:.28}
-  .hero-grad{position:absolute;inset:0;background:linear-gradient(180deg,rgba(22,24,28,.55),rgba(35,35,42,.92))}
+  .hero-bg{position:absolute;inset:0;width:100%;height:100%;border:0;pointer-events:none;opacity:.6}
+  .hero-grad{position:absolute;inset:0;background:linear-gradient(90deg,rgba(22,24,28,.9) 0%,rgba(22,24,28,.55) 55%,rgba(22,24,28,.2) 100%),linear-gradient(180deg,rgba(22,24,28,0) 60%,rgba(35,35,42,.95) 100%)}
   .hero-inner{position:relative;padding:84px 0 70px}
   .badge{display:inline-flex;align-items:center;gap:8px;background:var(--yellow);color:var(--black);
     font-weight:700;font-size:13px;padding:7px 14px;border-radius:30px;letter-spacing:.04em}
@@ -427,7 +427,7 @@
 
 <!-- HERO -->
 <section class="hero" style="border-bottom:none;padding:0">
-  <img class="hero-bg" data-src="images/render-3d.png" alt="">
+  <iframe class="hero-bg" src="live.html?bg" title="" aria-hidden="true" tabindex="-1" scrolling="no"></iframe>
   <div class="hero-grad"></div>
   <div class="wrap hero-inner">
     <span class="badge"><span class="dot"></span>СТАТУС: В РЕАЛИЗАЦИИ · 24/7</span>
@@ -948,15 +948,6 @@ function mountImg(box, src, cap){
 }
 document.querySelectorAll('.ph').forEach(b=> mountImg(b, b.dataset.img, b.dataset.cap));
 
-/* hero bg */
-(function(){
-  const bg = document.querySelector('.hero-bg');
-  const probe = new Image();
-  probe.onload = ()=> bg.src = bg.dataset.src;
-  probe.onerror = ()=> bg.remove();
-  probe.src = bg.dataset.src;
-})();
-
 /* ----- Reveal + анимация полос ----- */
 const io = new IntersectionObserver((entries)=>{
   entries.forEach(e=>{
@@ -977,7 +968,7 @@ document.getElementById('overallBar').style.width = overall + '%';
 document.getElementById('updated').textContent = new Date().toLocaleDateString('ru-RU',{day:'numeric',month:'long',year:'numeric'});
 </script>
 <script>
-addEventListener("message",function(e){var d=e.data;if(d&&d.swLiveHeight){var f=document.getElementById("liveFrame");if(f)f.style.height=Math.ceil(d.swLiveHeight)+"px";}});
+addEventListener("message",function(e){var d=e.data;if(d&&d.swLiveHeight){var f=document.getElementById("liveFrame");if(f&&e.source===f.contentWindow)f.style.height=Math.ceil(d.swLiveHeight)+"px";}});
 </script>
 </body>
 </html>
